@@ -1,0 +1,6 @@
+# Ignorar shapefiles grandes
+*.shp
+*.dbf
+*.shx
+*.prj
+*.cpg
