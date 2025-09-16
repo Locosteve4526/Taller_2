@@ -352,7 +352,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -368,6 +370,24 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargue-de-datos">Cargue de datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#procesamiento-de-la-variables">Procesamiento de la variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graficas">Graficas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-regiones-concentran-los-valores-mas-altos">¿Qué regiones concentran los valores más altos?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#se-observan-desigualdades-territoriales">¿Se observan desigualdades territoriales?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-factores-podrian-explicar-esas-diferencias">¿Qué factores podrían explicar esas diferencias?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">¿Qué regiones concentran los valores más altos?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">¿Se observan desigualdades territoriales?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">¿Qué factores podrían explicar esas diferencias?</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -390,6 +410,9 @@ document.write(`
 </div>
 </div>
 </div>
+<section id="cargue-de-datos">
+<h2>Cargue de datos<a class="headerlink" href="#cargue-de-datos" title="Link to this heading">#</a></h2>
+<p>Primero cargamos los datos, tanto del mapa usando el shape file, como de los datos que se desean representar</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shapefile_path</span> <span class="o">=</span> <span class="s2">&quot;MGN2024_MPIO_POLITICO/MGN_ADM_MPIO_GRAFICO.shp&quot;</span>
@@ -518,6 +541,7 @@ document.write(`
 </div>
 </div>
 </div>
+<p>Se uso un dataset adicional para mapear los directorios de los encuestados con su respectivo municipio y departamento</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Carga TIC y diseño muestral</span>
@@ -808,9 +832,14 @@ document.write(`
 <p>5 rows × 86 columns</p>
 </div></div></div>
 </div>
+</section>
+<section id="procesamiento-de-la-variables">
+<h2>Procesamiento de la variables<a class="headerlink" href="#procesamiento-de-la-variables" title="Link to this heading">#</a></h2>
+<p>Las variables que decidi tomar son las preguntas P1048 que hace referencia a el acceso a internet que tiene el encuestado. Se representara en porcentajes de acuerdo al departamento.
+La segundo fue la pregunta P1082 dice ¿tiene teléfono celular? Pudiendo responder 1= si y 2= no</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Selecciona solo las columnas necesarias</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Seleccion de solo las columnas necesarias</span>
 <span class="n">diseno</span> <span class="o">=</span> <span class="n">diseno</span><span class="p">[[</span><span class="s2">&quot;DIRECTORIO&quot;</span><span class="p">,</span> <span class="s2">&quot;MPIO&quot;</span><span class="p">]]</span>
 
 <span class="c1"># Une por DIRECTORIO</span>
@@ -828,6 +857,36 @@ document.write(`
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P1084&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;P1082&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;P1082S1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;P1082S2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+236986
+236986
+</pre></div>
+</div>
+</div>
+</div>
+<p>Para este caso se tomaran los valores nulos como personas que no tienen celular, esto de acuerdo a como estan hecha la encuesta</p>
+<p>Luego para el caso de la pregunta P1082 se unen las dos pregunas que hacen parte a esta. P1082S1 dice, Teléfono celular convencional y P1082S2 dice, Teléfono celular inteligente (smartphone).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -851,13 +910,10 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">departamentos</span> <span class="o">=</span> <span class="nb">map</span><span class="o">.</span><span class="n">dissolve</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;dpto_ccdgo&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
+</section>
+<section id="graficas">
+<h2>Graficas<a class="headerlink" href="#graficas" title="Link to this heading">#</a></h2>
+<p>Para graficar primero se hizo un merge para unir toda la informacion y usar este nuevo dataframe para graficar</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span> <span class="o">=</span> <span class="n">departamentos</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">resumen</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;dpto_ccdgo&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;DPTO&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
@@ -865,25 +921,70 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">column</span><span class="o">=</span><span class="s2">&quot;porc_internet&quot;</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Reds&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Reds</span><span class="p">,</span>
     <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">missing_kwds</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Sin datos&quot;</span>
+    <span class="p">},</span>
+    <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Porcentaje de hogares con Internet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;vertical&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shrink&quot;</span><span class="p">:</span> <span class="mf">0.7</span>
+    <span class="p">}</span>
 <span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span> 
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/8ab41dda19198ce1c3e7d2bfb3569b949918905f6f62d442e189c090c789ef09.png" src="_images/8ab41dda19198ce1c3e7d2bfb3569b949918905f6f62d442e189c090c789ef09.png" />
+<img alt="_images/752bcdd27bda4ccfe4829ee72e3390b6ccc20d961d359be82f1024d21afe4dd4.png" src="_images/752bcdd27bda4ccfe4829ee72e3390b6ccc20d961d359be82f1024d21afe4dd4.png" />
 </div>
 </div>
+<hr class="docutils" />
+<section id="que-regiones-concentran-los-valores-mas-altos">
+<h3>¿Qué regiones concentran los valores más altos?<a class="headerlink" href="#que-regiones-concentran-los-valores-mas-altos" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Los valores más altos de acceso a Internet se concentran en los departamentos más urbanos y desarrollados, como Bogotá D.C., Antioquia, Valle del Cauca, Atlántico y Santander. Estos departamentos aparecen con los colores más intensos en el mapa, lo que indica un mayor porcentaje de hogares con acceso a Internet.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="se-observan-desigualdades-territoriales">
+<h3>¿Se observan desigualdades territoriales?<a class="headerlink" href="#se-observan-desigualdades-territoriales" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Sí, el mapa muestra desigualdades claras entre regiones. Los departamentos de la Amazonía, Orinoquía y algunos de la Costa Pacífica (como Vaupés, Guainía, Guaviare, Amazonas y Chocó) presentan porcentajes mucho menores de acceso a Internet, evidenciando una brecha territorial significativa.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="que-factores-podrian-explicar-esas-diferencias">
+<h3>¿Qué factores podrían explicar esas diferencias?<a class="headerlink" href="#que-factores-podrian-explicar-esas-diferencias" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Nivel de urbanización:</strong> Las zonas urbanas cuentan con mejor infraestructura y cobertura de servicios de Internet.</p></li>
+<li><p><strong>Desarrollo económico:</strong> Los departamentos con mayor ingreso y desarrollo pueden costear más fácilmente el acceso a Internet.</p></li>
+<li><p><strong>Infraestructura:</strong> En regiones rurales y apartadas, la conectividad es limitada o inexistente.</p></li>
+<li><p><strong>Educación:</strong> Un mayor nivel educativo suele asociarse a mayor uso y acceso a tecnología.</p></li>
+<li><p><strong>Políticas públicas:</strong> Algunas regiones han recibido más inversión en conectividad y tecnología.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>En resumen:</strong><br />
+Las regiones más urbanas y desarrolladas concentran los valores más altos de acceso a Internet, mientras que las zonas rurales y apartadas presentan rezagos, reflejando desigualdades territoriales asociadas a factores económicos, de infraestructura y sociales.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">resumen_cel</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;dpto_ccdgo&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;DPTO&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
@@ -891,7 +992,12 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear figura con dos subplots</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -899,36 +1005,85 @@ document.write(`
 <span class="c1"># Mapa 1: Celular convencional</span>
 <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">column</span><span class="o">=</span><span class="s2">&quot;convencional&quot;</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">,</span>
     <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">missing_kwds</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Sin datos&quot;</span>
+    <span class="p">},</span>
+    <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Porcentaje de hogares con celular convencional&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;vertical&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shrink&quot;</span><span class="p">:</span> <span class="mf">0.7</span>
+    <span class="p">}</span>
 <span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Porcentaje con Celular Convencional&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Celular Convencional&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 
 <span class="c1"># Mapa 2: Celular inteligente</span>
 <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">column</span><span class="o">=</span><span class="s2">&quot;inteligente&quot;</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greens&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greens</span><span class="p">,</span>
     <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">missing_kwds</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Sin datos&quot;</span>
+    <span class="p">},</span>
+    <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Porcentaje de hogares con celular inteligente&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;vertical&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shrink&quot;</span><span class="p">:</span> <span class="mf">0.7</span>
+    <span class="p">}</span>
 <span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Porcentaje con Celular Inteligente&quot;</span><span class="p">)</span>
-
-<span class="c1"># Quitar ejes</span>
-<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Celular Inteligente&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/0f72922e4b802629ed9a5560db1262e3bc2efdf2a39af67ef87a32fa11527b01.png" src="_images/0f72922e4b802629ed9a5560db1262e3bc2efdf2a39af67ef87a32fa11527b01.png" />
+<img alt="_images/86a300e10db89d6ae4cabd1d592ba30f54d3d070408e08a8a755df3165973a0f.png" src="_images/86a300e10db89d6ae4cabd1d592ba30f54d3d070408e08a8a755df3165973a0f.png" />
 </div>
 </div>
+</section>
+<hr class="docutils" />
+<section id="id1">
+<h3>¿Qué regiones concentran los valores más altos?<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Celular convencional e inteligente:</strong><br />
+Los valores más altos se concentran en los departamentos más urbanos y desarrollados, como Bogotá D.C., Antioquia, Valle del Cauca, Atlántico y Santander. Estas regiones aparecen con los colores más intensos en ambos mapas, indicando un mayor porcentaje de hogares con acceso a celulares convencionales e inteligentes.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id2">
+<h3>¿Se observan desigualdades territoriales?<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Sí, los mapas muestran desigualdades claras entre regiones.<br />
+Los departamentos de la Amazonía, Orinoquía y algunos de la Costa Pacífica (como Vaupés, Guainía, Guaviare, Amazonas y Chocó) presentan porcentajes mucho menores, evidenciando una brecha territorial en el acceso a tecnología.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3>¿Qué factores podrían explicar esas diferencias?<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Nivel de urbanización:</strong> Las zonas urbanas tienen mejor infraestructura y cobertura de telecomunicaciones.</p></li>
+<li><p><strong>Desarrollo económico:</strong> Los departamentos con mayor ingreso y desarrollo pueden costear más tecnología.</p></li>
+<li><p><strong>Infraestructura:</strong> En regiones rurales y apartadas, la conectividad es limitada o inexistente.</p></li>
+<li><p><strong>Educación:</strong> Un mayor nivel educativo suele asociarse a mayor uso y acceso a tecnología.</p></li>
+<li><p><strong>Políticas públicas:</strong> Algunas regiones han recibido más inversión en conectividad y tecnología.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>En resumen:</strong><br />
+Las regiones más urbanas y desarrolladas concentran los valores más altos, mientras que las zonas rurales y apartadas presentan rezagos, reflejando desigualdades territoriales asociadas a factores económicos, de infraestructura y sociales.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -976,6 +1131,31 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargue-de-datos">Cargue de datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#procesamiento-de-la-variables">Procesamiento de la variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graficas">Graficas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-regiones-concentran-los-valores-mas-altos">¿Qué regiones concentran los valores más altos?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#se-observan-desigualdades-territoriales">¿Se observan desigualdades territoriales?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-factores-podrian-explicar-esas-diferencias">¿Qué factores podrían explicar esas diferencias?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">¿Qué regiones concentran los valores más altos?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">¿Se observan desigualdades territoriales?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">¿Qué factores podrían explicar esas diferencias?</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
